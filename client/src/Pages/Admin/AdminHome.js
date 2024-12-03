@@ -7,7 +7,7 @@ const AdminHome = () => {
   return (
     <Layout>
       <div className="container">
-        <div className="d-felx flex-column mt-4">
+        <div className="d-flex flex-column mt-4">  {/* Fixed the typo here */}
           <h1>
             Welcome Admin <i className="text-success">{user?.name}</i>
           </h1>

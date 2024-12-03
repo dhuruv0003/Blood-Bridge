@@ -9,11 +9,14 @@ const Modal = () => {
   const [quantity, setQuantity] = useState(0);
   const [email, setEmail] = useState("");
   const { user } = useSelector((state) => state.auth);
-  // handle modal data
+
   const handleModalSubmit = async () => {
     try {
-      if (!bloodGroup || !quantity) {
-        return alert("Please Provide All Fields");
+      if (!bloodGroup || !quantity || !email) {
+        return alert("Please provide all fields");
+      }
+      if (quantity <= 0) {
+        return alert("Quantity must be a positive number");
       }
       const { data } = await API.post("/inventory/create-inventory", {
         email,
@@ -23,11 +26,11 @@ const Modal = () => {
         quantity,
       });
       if (data?.success) {
-        alert("New Record Created");
+        alert("New record created");
         window.location.reload();
       }
     } catch (error) {
-      alert(error.response.data.message);
+      alert(error.response?.data?.message || "Error occurred while creating record");
       console.log(error);
       window.location.reload();
     }
@@ -35,7 +38,6 @@ const Modal = () => {
 
   return (
     <>
-      {/* Modal */}
       <div
         className="modal fade"
         id="staticBackdrop"
@@ -60,13 +62,13 @@ const Modal = () => {
             </div>
             <div className="modal-body">
               <div className="d-flex mb-3">
-                Blood Type: &nbsp;
+                Blood Type:
                 <div className="form-check ms-3">
                   <input
                     type="radio"
                     name="inRadio"
-                    defaultChecked
-                    value={"in"}
+                    checked={inventoryType === "in"}
+                    value="in"
                     onChange={(e) => setInventoryType(e.target.value)}
                     className="form-check-input"
                   />
@@ -78,7 +80,8 @@ const Modal = () => {
                   <input
                     type="radio"
                     name="inRadio"
-                    value={"out"}
+                    checked={inventoryType === "out"}
+                    value="out"
                     onChange={(e) => setInventoryType(e.target.value)}
                     className="form-check-input"
                   />
@@ -87,34 +90,36 @@ const Modal = () => {
                   </label>
                 </div>
               </div>
+
               <select
                 className="form-select"
-                aria-label="Default select example"
+                aria-label="Blood Group select"
                 onChange={(e) => setBloodGroup(e.target.value)}
+                value={bloodGroup}
               >
-                <option defaultValue={"Open this select menu"}>
-                  Open this select menu
-                </option>
-                <option value={"O+"}>O+</option>
-                <option value={"O-"}>O-</option>
-                <option value={"AB+"}>AB+</option>
-                <option value={"AB-"}>AB-</option>
-                <option value={"A+"}>A+</option>
-                <option value={"A-"}>A-</option>
-                <option value={"B+"}>B+</option>
-                <option value={"B-"}>B-</option>
+                <option value="">Open this select menu</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
               </select>
+
               <InputType
-                labelText={"Donar Email"}
-                labelFor={"donarEmail"}
-                inputType={"email"}
+                labelText="Donor Email"
+                labelFor="donarEmail"
+                inputType="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
+
               <InputType
-                labelText={"Quanitity (ML)"}
-                labelFor={"quantity"}
-                inputType={"Number"}
+                labelText="Quantity (ML)"
+                labelFor="quantity"
+                inputType="number"
                 value={quantity}
                 onChange={(e) => setQuantity(e.target.value)}
               />

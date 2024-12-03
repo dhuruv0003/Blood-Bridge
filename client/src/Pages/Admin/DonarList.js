@@ -5,11 +5,11 @@ import API from "../../Services/API";
 
 const DonarList = () => {
   const [data, setData] = useState([]);
-  //find donar records
+
+  // Find donor records
   const getDonars = async () => {
     try {
       const { data } = await API.get("/admin/donar-list");
-      //   console.log(data);
       if (data?.success) {
         setData(data?.donarData);
       }
@@ -22,11 +22,11 @@ const DonarList = () => {
     getDonars();
   }, []);
 
-  //DELETE FUNCTION
+  // DELETE FUNCTION
   const handelDelete = async (id) => {
     try {
       let answer = window.prompt(
-        "Are You SUre Want To Delete This Donar",
+        "Are You Sure Want To Delete This Donar",
         "Sure"
       );
       if (!answer) return;
@@ -40,35 +40,51 @@ const DonarList = () => {
 
   return (
     <Layout>
-      <table className="table ">
-        <thead>
-          <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Email</th>
-            <th scope="col">Phone</th>
-            <th scope="col">Date</th>
-            <th scope="col">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data?.map((record) => (
-            <tr key={record._id}>
-              <td>{record.name || record.organisationName + " (ORG)"}</td>
-              <td>{record.email}</td>
-              <td>{record.phone}</td>
-              <td>{moment(record.createdAt).format("DD/MM/YYYY hh:mm A")}</td>
-              <td>
-                <button
-                  className="btn btn-danger"
-                  onClick={() => handelDelete(record._id)}
+      <div className="p-4">
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white shadow-md rounded-lg border-collapse">
+            <thead>
+              <tr className="bg-gray-800 text-white">
+                <th className="px-4 py-2 text-left">Name</th>
+                <th className="px-4 py-2 text-left">Email</th>
+                <th className="px-4 py-2 text-left">Phone</th>
+                <th className="px-4 py-2 text-left">Date</th>
+                <th className="px-4 py-2 text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data?.map((record) => (
+                <tr
+                  key={record._id}
+                  className="border-b hover:bg-gray-100 transition"
                 >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                  <td className="px-4 py-2">
+                    {record.name || `${record.organisationName} (ORG)`}
+                  </td>
+                  <td className="px-4 py-2">{record.email}</td>
+                  <td className="px-4 py-2">{record.phone}</td>
+                  <td className="px-4 py-2">
+                    {moment(record.createdAt).format("DD/MM/YYYY hh:mm A")}
+                  </td>
+                  <td className="px-4 py-2 text-center">
+                    <button
+                      className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition"
+                      onClick={() => handelDelete(record._id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {data.length === 0 && (
+            <div className="text-center text-gray-500 mt-4">
+              No donors found.
+            </div>
+          )}
+        </div>
+      </div>
     </Layout>
   );
 };

@@ -12,13 +12,12 @@ const HomePage = () => {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
 
-  //get function
+  // Get function
   const getBloodRecords = async () => {
     try {
       const { data } = await API.get("/inventory/get-inventory");
       if (data?.success) {
         setData(data?.inventory);
-        // console.log(data);
       }
     } catch (error) {
       console.log(error);
@@ -28,52 +27,53 @@ const HomePage = () => {
   useEffect(() => {
     getBloodRecords();
   }, []);
+
   return (
     <Layout>
       {user?.role === "admin" && navigate("/admin")}
-      {error && <span>{alert(error)}</span>}
+      {error && <span className="text-red-500">{alert(error)}</span>}
       {loading ? (
         <Spinner />
       ) : (
-        <>
-          <div className="container">
-            <h4
-              className="ms-4"
-              data-bs-toggle="modal"
-              data-bs-target="#staticBackdrop"
-              style={{ cursor: "pointer" }}
-            >
-              <i className="fa-solid fa-plus text-success py-4"></i>
-              Add Inventory
-            </h4>
-            <table className="table ">
+        <div className="container mx-auto mt-6 px-4">
+          <h4
+            className="text-lg font-semibold text-gray-700 cursor-pointer mb-4"
+            data-bs-toggle="modal"
+            data-bs-target="#staticBackdrop"
+          >
+            <i className="fa-solid fa-plus text-green-500 py-4"></i>
+            Add Inventory
+          </h4>
+
+          <div className="overflow-x-auto bg-white shadow-md rounded-lg">
+            <table className="min-w-full table-auto border-collapse">
               <thead>
-                <tr>
-                  <th scope="col">Blood Group</th>
-                  <th scope="col">Inventory Type</th>
-                  <th scope="col">Quantity</th>
-                  <th scope="col">Donar Email</th>
-                  <th scope="col">TIme & Date</th>
+                <tr className="bg-gray-100 text-gray-700">
+                  <th className="py-3 px-4 text-left font-semibold text-sm">Blood Group</th>
+                  <th className="py-3 px-4 text-left font-semibold text-sm">Inventory Type</th>
+                  <th className="py-3 px-4 text-left font-semibold text-sm">Quantity</th>
+                  <th className="py-3 px-4 text-left font-semibold text-sm">Donor Email</th>
+                  <th className="py-3 px-4 text-left font-semibold text-sm">Time & Date</th>
                 </tr>
               </thead>
               <tbody>
                 {data?.map((record) => (
-                  <tr key={record._id}>
-                    <td>{record.bloodGroup}</td>
-                    <td>{record.inventoryType}</td>
-                    <td>{record.quantity} (ML)</td>
-                    <td>{record.email}</td>
-                    <td>
+                  <tr key={record._id} className="border-b">
+                    <td className="py-3 px-4 text-sm text-gray-700">{record.bloodGroup}</td>
+                    <td className="py-3 px-4 text-sm text-gray-700">{record.inventoryType}</td>
+                    <td className="py-3 px-4 text-sm text-gray-700">{record.quantity} (ML)</td>
+                    <td className="py-3 px-4 text-sm text-gray-700">{record.email}</td>
+                    <td className="py-3 px-4 text-sm text-gray-700">
                       {moment(record.createdAt).format("DD/MM/YYYY hh:mm A")}
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
-
-            <Modal />
           </div>
-        </>
+
+          <Modal />
+        </div>
       )}
     </Layout>
   );

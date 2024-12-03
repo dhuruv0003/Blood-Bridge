@@ -93,27 +93,28 @@ const createInventoryController = async (req, res) => {
 // GET ALL BLOOD RECORS
 const getInventoryController = async (req, res) => {
   try {
+    console.log("UserId from Request Body:", req.body.userId); // Log the userId to verify
     const inventory = await inventoryModel
-      .find({
-        organisation: req.body.userId,
-      })
+      .find({ organisation: req.body.userId })
       .populate("donar")
       .populate("hospital")
       .sort({ createdAt: -1 });
+
     return res.status(200).send({
       success: true,
-      messaage: "get all records successfully",
+      message: "Get all records successfully",
       inventory,
     });
   } catch (error) {
     console.log(error);
     return res.status(500).send({
       success: false,
-      message: "Error In Get All Inventory",
+      message: "Error in Get All Inventory",
       error,
     });
   }
 };
+
 // GET Hospital BLOOD RECORS
 const getInventoryHospitalController = async (req, res) => {
   try {

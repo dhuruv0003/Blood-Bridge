@@ -5,11 +5,11 @@ import moment from "moment";
 
 const Hospitals = () => {
   const [data, setData] = useState([]);
-  //find donar records
+
+  // Fetch hospital records
   const getDonars = async () => {
     try {
       const { data } = await API.get("/inventory/get-hospitals");
-      //   console.log(data);
       if (data?.success) {
         setData(data?.hospitals);
       }
@@ -24,28 +24,59 @@ const Hospitals = () => {
 
   return (
     <Layout>
-      <table className="table ">
-        <thead>
-          <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Email</th>
-            <th scope="col">Phone</th>
-            <th scope="col">Address</th>
-            <th scope="col">Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data?.map((record) => (
-            <tr key={record._id}>
-              <td>{record.hospitalName}</td>
-              <td>{record.email}</td>
-              <td>{record.phone}</td>
-              <td>{record.address}</td>
-              <td>{moment(record.createdAt).format("DD/MM/YYYY hh:mm A")}</td>
+      <div className="overflow-x-auto bg-white shadow-lg rounded-md p-4">
+        <table className="min-w-full table-auto">
+          <thead className="bg-gray-100">
+            <tr>
+              <th
+                scope="col"
+                className="px-4 py-2 text-left text-sm font-semibold text-gray-600"
+              >
+                Name
+              </th>
+              <th
+                scope="col"
+                className="px-4 py-2 text-left text-sm font-semibold text-gray-600"
+              >
+                Email
+              </th>
+              <th
+                scope="col"
+                className="px-4 py-2 text-left text-sm font-semibold text-gray-600"
+              >
+                Phone
+              </th>
+              <th
+                scope="col"
+                className="px-4 py-2 text-left text-sm font-semibold text-gray-600"
+              >
+                Address
+              </th>
+              <th
+                scope="col"
+                className="px-4 py-2 text-left text-sm font-semibold text-gray-600"
+              >
+                Date
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {data?.map((record) => (
+              <tr key={record._id} className="border-b">
+                <td className="px-4 py-2 text-sm text-gray-700">
+                  {record.hospitalName}
+                </td>
+                <td className="px-4 py-2 text-sm text-gray-700">{record.email}</td>
+                <td className="px-4 py-2 text-sm text-gray-700">{record.phone}</td>
+                <td className="px-4 py-2 text-sm text-gray-700">{record.address}</td>
+                <td className="px-4 py-2 text-sm text-gray-700">
+                  {moment(record.createdAt).format("DD/MM/YYYY hh:mm A")}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </Layout>
   );
 };

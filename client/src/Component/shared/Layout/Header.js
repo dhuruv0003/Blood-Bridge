@@ -2,57 +2,81 @@ import React from "react";
 import { BiDonateBlood, BiUserCircle } from "react-icons/bi";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+
 const Header = () => {
   const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const location = useLocation();
-  // logout handler
+
+  // Logout handler
   const handleLogout = () => {
     localStorage.clear();
-    alert("Logout Successfully");
+    alert("Logged out successfully!");
     navigate("/login");
   };
 
   return (
-    <>
-      <nav className="navbar">
-        <div className="container-fluid ">
-          <div className="navbar-brand h1 ">
-            <BiDonateBlood color="red" /> Blood Bank App
-          </div>
-          <ul className="navbar-nav flex-row">
-            <li className="nav-item mx-3">
-              <p className="nav-link">
-                <BiUserCircle /> Welcome{" "}
-                {user?.name || user?.hospitalName || user?.organisationName}
-                &nbsp;
-                <span className="badge bg-secondary">{user?.role}</span>
+    <nav className="bg-red-600 text-white px-4 py-3 shadow-md">
+      <div className="container mx-auto flex justify-between items-center">
+        {/* Brand Section */}
+        <div className="flex items-center gap-2 text-xl font-bold">
+          <BiDonateBlood className="text-2xl" />
+          <span>Blood Bank App</span>
+        </div>
+
+        {/* Navigation Section */}
+        <ul className="flex items-center gap-6">
+          {/* User Welcome Section */}
+          {user && (
+            <li className="flex items-center gap-2">
+              <BiUserCircle className="text-2xl" />
+              <p className="text-sm">
+                Welcome,{" "}
+                <span className="font-semibold">
+                  {user?.name || user?.hospitalName || user?.organisationName}
+                </span>
+                <span className="ml-2 bg-gray-200 text-red-600 text-xs px-2 py-1 rounded">
+                  {user?.role}
+                </span>
               </p>
             </li>
-            {location.pathname === "/" ||
-            location.pathname === "/donar" ||
-            location.pathname === "/hospital" ? (
-              <li className="nav-item mx-3">
-                <Link to="/analytics" className="nav-link">
-                  Analytics
-                </Link>
-              </li>
-            ) : (
-              <li className="nav-item mx-3">
-                <Link to="/" className="nav-link">
-                  Home
-                </Link>
-              </li>
-            )}
-            <li className="nav-item mx-3">
-              <button className="btn btn-danger" onClick={handleLogout}>
-                Logout
-              </button>
+          )}
+
+          {/* Conditional Links */}
+          {location.pathname === "/" ||
+          location.pathname === "/donar" ||
+          location.pathname === "/hospital" ? (
+            <li>
+              <Link
+                to="/analytics"
+                className="text-sm hover:underline hover:text-gray-300"
+              >
+                Analytics
+              </Link>
             </li>
-          </ul>
-        </div>
-      </nav>
-    </>
+          ) : (
+            <li>
+              <Link
+                to="/"
+                className="text-sm hover:underline hover:text-gray-300"
+              >
+                Home
+              </Link>
+            </li>
+          )}
+
+          {/* Logout Button */}
+          <li>
+            <button
+              onClick={handleLogout}
+              className="bg-white text-red-600 px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-200"
+            >
+              Logout
+            </button>
+          </li>
+        </ul>
+      </div>
+    </nav>
   );
 };
 
