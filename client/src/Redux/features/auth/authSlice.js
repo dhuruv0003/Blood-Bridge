@@ -41,7 +41,7 @@ const authSlice = createSlice({
       state.user = payload.user;
     });
     builder.addCase(userRegister.rejected, (state, { payload }) => {
-      state.loading = false;
+      state.loading = false;           
       state.error = payload;
     });
     // CURRENT user

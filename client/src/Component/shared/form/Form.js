@@ -59,6 +59,7 @@ const Form = ({ formType, submitBtn, formTitle }) => {
               name="role"
               id="adminRadio"
               value="admin"
+              
               onChange={(e) => setRole(e.target.value)}
             />
             <label htmlFor="adminRadio" className="text-gray-700">

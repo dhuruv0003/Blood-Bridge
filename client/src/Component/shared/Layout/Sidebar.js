@@ -19,11 +19,15 @@ const Sidebar = () => {
     { to: "/donar-list", icon: "fa-solid fa-warehouse", label: "Donar List" },
     { to: "/hospital-list", icon: "fa-solid fa-hand-holding-medical", label: "Hospital List" },
     { to: "/org-list", icon: "fa-solid fa-hospital", label: "Organisation List" },
+    { to: "/consumer", icon: "fa-sharp fa-solid fa-building-ngo", label: "Consumer" }
   ];
 
-  const commonMenu = [
+  const hospitalMenu = [
     { to: "/orgnaisation", icon: "fa-sharp fa-solid fa-building-ngo", label: "Orgnaisation" },
     { to: "/consumer", icon: "fa-sharp fa-solid fa-building-ngo", label: "Consumer" },
+  ];
+  const donorMenu = [
+    { to: "/orgnaisation", icon: "fa-sharp fa-solid fa-building-ngo", label: "Orgnaisation" },
     { to: "/donation", icon: "fa-sharp fa-solid fa-building-ngo", label: "Donation" },
   ];
 
@@ -42,7 +46,8 @@ const Sidebar = () => {
         <div className="menu">
           {user?.role === "organisation" && renderMenuItems(organisationMenu)}
           {user?.role === "admin" && renderMenuItems(adminMenu)}
-          {(user?.role === "donar" || user?.role === "hospital") && renderMenuItems(commonMenu)}
+          {(user?.role === "donar" )&& renderMenuItems(donorMenu)}
+          {(user?.role === "hospital") && renderMenuItems(hospitalMenu)}
         </div>
       </div>
     </div>

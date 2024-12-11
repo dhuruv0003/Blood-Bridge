@@ -26,7 +26,7 @@ app.use("/api/v1/analytics", require("./routes/analyticsRoutes"));
 app.use("/api/v1/admin", require("./routes/AdminRoute"));
 
 //port
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8001;
 
 app.listen(PORT, () => {
   console.log(

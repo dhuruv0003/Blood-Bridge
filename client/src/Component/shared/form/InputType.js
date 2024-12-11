@@ -18,6 +18,7 @@ const InputType = ({
         type={inputType}
         className="form-control"
         name={name}
+        required
         value={value}
         onChange={onChange}
         placeholder={placeholder}
